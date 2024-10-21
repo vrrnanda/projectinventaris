@@ -22,13 +22,12 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Ruangan tidak ditemukan untuk pengguna ini.');
         }
 
-        $ruanganNama = $user->ruangan; // Ambil nama ruangan langsung dari kolom 'ruangan'
+        $ruanganNama = $user->ruangan;
 
-        // Ambil data barang berdasarkan nama ruangan
         $penempatan = Penempatan::join('barang', 'penempatan.namabrg', '=', 'barang.namabrg')
         ->where('penempatan.ruangan', $ruanganNama) // Menggunakan nama ruangan dari session
-        ->orderBy('barang.kodebrg', 'ASC') // Memastikan menggunakan kodebrg dari tabel barang
-        ->select('penempatan.*', 'barang.kodebrg')
+        ->orderBy('barang.kodebrg', 'ASC')
+        ->select('penempatan.*', 'barang.kodebrg', 'barang.kategori')
         ->paginate(10);
 
         return view('pages.user.barang.index', compact('penempatan'));
@@ -148,8 +147,10 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Ruangan tidak ditemukan untuk pengguna ini.');
         }
         $ruanganNama = $user->ruangan;
-        $penempatan = Penempatan::orderBy('kodepenempatan', 'ASC')
-        ->where('ruangan', $ruanganNama)
+        $penempatan = Penempatan::join('barang', 'penempatan.namabrg', '=', 'barang.namabrg')
+        ->where('penempatan.ruangan', $ruanganNama)
+        ->select('penempatan.*', 'barang.kategori') // Menambahkan kategori dari tabel barang
+        ->orderBy('penempatan.kodepenempatan', 'ASC')
         ->paginate(10);
 
         return view('pages.user.penempatan.index', compact('isFiltered','penempatan'));
