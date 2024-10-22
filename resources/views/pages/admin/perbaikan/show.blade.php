@@ -6,10 +6,16 @@
             <a href="{{route('perbaikanbarangadmin')}}" class="btn btn-outline-primary"><i class="bi bi-chevron-left"></i>Kembali</a>
         </div>
         @method('PUT')
+            @if($perbaikan->kodelaporan)
+            <div class="mb-3 mt-2">
+                <label class="form-label">Kode Laporan</label>
+                <input type="text" name="kodelaporan" class="form-control" value="{{$perbaikan->kodelaporan}}" readonly>
+            </div>
+            @endif
             <div class="row">
                 <div class="col">
-                    <label>Kode Laporan</label>
-                    <input type="text" name="kodelaporan" class="form-control" value="{{$perbaikan->kodeperbaikan}}" readonly>
+                    <label>Kode Pergantian</label>
+                    <input type="text" name="kodeperbaikan" class="form-control" value="{{$perbaikan->kodeperbaikan}}" readonly>
                 </div>
                 <div class="col">
                 <label>Nama Barang</label>
